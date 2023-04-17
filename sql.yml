@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sqldb-deployment
+  labels:
+    app: sqldb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sqldb
+  template:
+    metadata:
+      labels:
+        app: sqldb
+    spec:
+      containers:
+      - name: sqldb
+        image: vignesh22310/sqldb
+        args:
+         - "--ignore-db-dir=lost+found" 
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: sqldb-volume
+        ports:
+        - containerPort: 3306
+        env:
+         - name: MYSQL_ROOT_PASSWORD
+           valueFrom:
+             secretKeyRef:
+               name: secret
+               key: db-pass
+      nodeSelector:
+        zone: us-east-2a
+      volumes:
+        - name: sqldb-volume
+          # This AWS EBS volume must already exist.
+          awsElasticBlockStore:
+             volumeID: vol-0422e247164bc9630
+             fsType: ext4           
