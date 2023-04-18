@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sqldb-deployment
+  name: sqldb
   labels:
     app: sqldb
 spec:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: sqldb
-        image: vignesh22310/sqldb
+        image: mysql:latest
         args:
          - "--ignore-db-dir=lost+found" 
         volumeMounts:
