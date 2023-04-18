@@ -29,7 +29,7 @@ spec:
            valueFrom:
              secretKeyRef:
                name: secret
-               key: db-pass
+               key: sql-pass
       nodeSelector:
         zone: us-east-2a
       volumes:
